@@ -47,13 +47,13 @@ It’s not guessing, and it’s not symbolically solving math — it just keeps 
 
 ## Proper definition
 
-**Automatic Differentiation (AD)** is a set of techniques to **compute exact derivatives of functions expressed as computer programs by systematically applying the chain rule of calculus to every elementary operation in the computation graph**.
+**Automatic Differentiation (AD)** is a set of techniques to **compute exact derivatives of functions expressed as computer programs by systematically applying the chain rule of calculus to every elementary operation in the [[computation graph]]**. We can calculate the [[jacobian matrix]]. 
 
 ### Formally
 
 If we have a function f : Rn → Rm that is implemented as a sequence of elementary operations (addition, multiplication, trigonometric functions, etc.), AD evaluates derivatives by:
 
-1. **Decomposing** f into a computational graph of primitive operations.
+1. **Decomposing** f into a [[computation graph]] of primitive operations.
 2. **Propagating derivatives** through this graph using the **chain rule**:
 	
 	   ∂y/∂x = ∂y/∂u * ∂u/∂x
@@ -68,11 +68,14 @@ If we have a function f : Rn → Rm that is implemented as a sequence of element
     
       dot(vi) = v˙i = sum_j ∑ ∂vi/∂vj * v˙j 
     
-    Good for n≪m (few inputs, many outputs). Fills columns first.
+    Good for n≪m (few inputs, many outputs). Fills columns first. Without computing the [[jacobian matrix]] we can calculate the product Jr, the jacobian-vector product when we start with x = r.
+      
+    Working with forward mode can be interpreted as working with an extension of the real numbers, called [[dual numbers]].
+
     
-- **Reverse Mode AD**: Propagates **adjoints (sensitivities)** backward after a forward pass.  
+- **Reverse Mode AD**: Propagates **adjoints (sensitivities)** backward after a forward pass. We need to fix one of the outputs yj, this way we can find the x's that influences (and how much) the y we choose.
     For each intermediate variable vi:
     
       bar(vj) = vˉj = sum_i ∑ ∂vi/∂vj * vˉi 
     
-    Good for n≫m (many inputs, single output) → this is essentially **backpropagation in neural networks**. Fills rows first.
+    Good for n≫m (many inputs, single output) → this is essentially **[[backpropagation]] in neural networks**. Fills rows first.
